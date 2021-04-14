@@ -2,7 +2,7 @@
 import React from "react";
 import {FilterValuesType, TasksPropsType} from "./App";
 
-type TodolistPropsType = {
+type TodoListPropsType = {
     title: string
     tasks: Array<TasksPropsType>
     removeTask: (taskID: number) => void;
@@ -10,7 +10,7 @@ type TodolistPropsType = {
 
 }
 
-export function TodoList(props: TodolistPropsType) {
+export function TodoList(props: TodoListPropsType) {
 
     const tasks = props.tasks.map(t => {
         const removeTask = () => props.removeTask(t.id);

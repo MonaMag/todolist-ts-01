@@ -32,22 +32,29 @@ function App() {
         setFilter(value);
     }
 
-    function getTaskForTodoList() {
-        switch (filter) {
-            case 'active':
-                return tasks.filter(t => !t.isDone);
-            case 'completed':
-                return tasks.filter(t => t.isDone);
-            default:
-                return tasks;
+
+        let tasksForTodoList = tasks;
+        if (filter === "completed") {
+            tasksForTodoList = tasks.filter(t => t.isDone === true);
+        } else if (filter === "active") {
+            tasksForTodoList = tasks.filter(t => t.isDone === false);
         }
-    }
+
+        // switch (filter) {
+        //     case 'active':
+        //         return tasks.filter(t => !t.isDone);
+        //     case 'completed':
+        //         return tasks.filter(t => t.isDone);
+        //     default:
+        //         return tasks;
+        // }
+
 
 //UI:
     return (
         <div className="App">
-            <TodoList title='Coding'
-                      tasks={getTaskForTodoList()}
+            <TodoList title="What to learn"
+                      tasks={tasksForTodoList}
                       removeTask={removeTask}
                       changeFilter={changeFilter}
             />
