@@ -11,13 +11,11 @@ export type TasksType = {
     title: string
     isDone: boolean
 }
-
 export type TodoListType = {
     id: string
     title: string
     filter: FilterValuesType
 }
-
 export type TaskStateType = {
     [key: string]: Array<TasksType>
 }
@@ -49,6 +47,42 @@ function App() {
         ]
     })
 
+    function removeTask(taskID: string, todoListID: string) {
+        tasks[todoListID] = tasks[todoListID].filter((task) => task.id !== taskID);
+        setTasks({...tasks})
+    }
+    function addTask(title: string, todoListID: string) {
+        const newTask: TasksType = {
+            id: v1(),
+            title,
+            isDone: false
+        }
+        setTasks({...tasks, [todoListID]: [newTask, ...tasks[todoListID]]});
+    }
+    function changeTaskStatus(taskId: string, newIsDoneValue: boolean, todoListID: string) {
+        tasks[todoListID] = tasks[todoListID].map(t =>
+            t.id === taskId
+                ? {...t, isDone: newIsDoneValue}
+                : t)
+        setTasks({...tasks})
+    }
+    function changeTaskTitle(taskId: string, newTitle: string, todoListID: string) {
+        setTasks({
+            ...tasks,
+            [todoListID]: tasks[todoListID].map(t =>
+                t.id === taskId
+                    ? {...t, title: newTitle}
+                    : t)
+        })
+    }
+
+
+    //todolists:
+    function changeFilter(value: FilterValuesType, todoListID: string) {
+        setTodoLists(todoLists.map(tl => tl.id === todoListID
+            ? {...tl, filter: value}
+            : tl))
+    }
     function addTodoList(title: string) {
         const newTodoListID = v1();
         const newTodoList: TodoListType = {
@@ -61,56 +95,15 @@ function App() {
             ...tasks, [newTodoListID]: []
         })
     }
-
-    function deleteTodoList(todoListID: string) {
+    function removeTodoList(todoListID: string) {
         setTodoLists(todoLists.filter(el => el.id !== todoListID))
         delete tasks[todoListID];
     }
-
     function changeTodolistTitle(newTitle: string, todoListID: string) {
         setTodoLists(todoLists.map(tl => tl.id === todoListID
             ? {...tl, title: newTitle}
             : tl))
     }
-
-    function removeTask(taskID: string, todoListID: string) {
-        tasks[todoListID] = tasks[todoListID].filter((task) => task.id !== taskID);
-        setTasks({...tasks})
-    }
-
-    function addTask(title: string, todoListID: string) {
-        const newTask: TasksType = {
-            id: v1(),
-            title,
-            isDone: false
-        }
-        setTasks({...tasks, [todoListID]: [newTask, ...tasks[todoListID]]});
-    }
-
-    function changeTaskStatus(taskId: string, newIsDoneValue: boolean, todoListID: string) {
-        tasks[todoListID] = tasks[todoListID].map(t =>
-            t.id === taskId
-                ? {...t, isDone: newIsDoneValue}
-                : t)
-        setTasks({...tasks})
-    }
-
-    function changeTaskTitle(taskId: string, newTitle: string, todoListID: string) {
-        setTasks({
-            ...tasks,
-            [todoListID]: tasks[todoListID].map(t =>
-                t.id === taskId
-                    ? {...t, title: newTitle}
-                    : t)
-        })
-    }
-
-    function changeFilter(value: FilterValuesType, todoListID: string) {
-        setTodoLists(todoLists.map(tl => tl.id === todoListID
-            ? {...tl, filter: value}
-            : tl))
-    }
-
     function getTaskForTodoList(todoList: TodoListType) {
         switch (todoList.filter) {
             case 'active':
@@ -129,7 +122,7 @@ function App() {
                 <Paper elevation={20} style={{padding: '15px'}}>
                     <Todolist
                         todoListID={tl.id}
-                        deleteTodoList={deleteTodoList}
+                        deleteTodoList={removeTodoList}
                         tasks={getTaskForTodoList(tl)}
                         title={tl.title}
                         filter={tl.filter}
