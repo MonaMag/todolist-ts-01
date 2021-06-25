@@ -7,42 +7,43 @@ import {Delete} from "@material-ui/icons";
 
 type TodolistPropsType = {
     title: string
-    todoListID: string
+    todolistID: string
     tasks: Array<TasksType>
-    changeTaskTitle: (taskId: string, title: string, todoListID: string) => void
-    deleteTodoList: (todoListID: string) => void
+    changeTaskTitle: (taskId: string, title: string, todolistID: string) => void
+    deleteTodoList: (todolistID: string) => void
     filter: FilterValuesType
-    removeTask: (taskID: string, todoListID: string) => void;
-    changeFilter: (value: FilterValuesType, todoListID: string) => void;
-    addTask: (title: string, todoListID: string) => void
-    changeTaskStatus: (taskId: string, newIsDoneValue: boolean, todoListID: string) => void
-    changeTodolistTitle: (newTitle: string, todoListID: string) => void
+    removeTask: (taskID: string, todolistID: string) => void;
+    changeFilter: (value: FilterValuesType, todolistID: string) => void;
+    addTask: (title: string, todolistID: string) => void
+    changeTaskStatus: (taskId: string, newIsDoneValue: boolean, todolistID: string) => void
+    changeTodolistTitle: (newTitle: string, todolistID: string) => void
 }
 
 export function Todolist(props: TodolistPropsType) {
 
     const {filter} = props;
 
-    const onClickAllFilter = () => props.changeFilter('all', props.todoListID);
-    const onClickActiveFilter = () => props.changeFilter('active', props.todoListID);
-    const onClickCompletedFilter = () => props.changeFilter('completed', props.todoListID);
 
-    const onClickDeleteTodoList = () => props.deleteTodoList(props.todoListID);
+    const onClickAllFilter = () => props.changeFilter('all', props.todolistID);
+    const onClickActiveFilter = () => props.changeFilter('active', props.todolistID);
+    const onClickCompletedFilter = () => props.changeFilter('completed', props.todolistID);
+
+    const onClickDeleteTodoList = () => props.deleteTodoList(props.todolistID);
 
     const changeTodolistTitle = (title: string) => {
-        props.changeTodolistTitle(title, props.todoListID)
+        props.changeTodolistTitle(title, props.todolistID)
     }
     const addTask = (title: string) => {
-        props.addTask(title, props.todoListID);
+        props.addTask(title, props.todolistID);
     }
 
     const tasks = props.tasks.map(t => {
-        const removeTaskHandler = () => props.removeTask(t.id, props.todoListID);
+        const removeTaskHandler = () => props.removeTask(t.id, props.todolistID);
 
-        const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => props.changeTaskStatus(t.id, e.currentTarget.checked, props.todoListID);
+        const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => props.changeTaskStatus(t.id, e.currentTarget.checked, props.todolistID);
 
         const changeTaskTitle = (title: string) => {
-            props.changeTaskTitle(t.id, title, props.todoListID);
+            props.changeTaskTitle(t.id, title, props.todolistID);
         }
 
         return (
