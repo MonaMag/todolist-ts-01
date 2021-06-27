@@ -60,7 +60,6 @@ function App() {
         }
         setTasks({...tasks, [todolistID]: [newTask, ...tasks[todolistID]]});
     }
-
     function changeTaskStatus(taskId: string, newIsDoneValue: boolean, todoListID: string) {
         tasks[todoListID] = tasks[todoListID].map(t =>
             t.id === taskId
@@ -68,7 +67,6 @@ function App() {
                 : t)
         setTasks({...tasks})
     }
-
     function changeTaskTitle(taskId: string, newTitle: string, todoListID: string) {
         setTasks({
             ...tasks,

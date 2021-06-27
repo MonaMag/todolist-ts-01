@@ -1,8 +1,8 @@
 import {
     ActionUnionType,
-    AddTodolistAC, ChangeTodolistFilterAT,
-    ChangeTodolistTitleAT,
-    RemoveTodolistAC,
+    addTodolistAC, changeTodolistFilterAT,
+    changeTodolistTitleAT,
+    removeTodolistAC,
     todolistReducer
 } from "./todolists-reducer";
 import {v1} from 'uuid';
@@ -17,7 +17,7 @@ test('correct todolist should be removed', () => {
         {id: todolistId2, title: "What to buy", filter: "all"}
     ]
 
-    const endState = todolistReducer(startState, RemoveTodolistAC(todolistId1))
+    const endState = todolistReducer(startState, removeTodolistAC(todolistId1))
 
     expect(endState.length).toBe(1);
     expect(endState[0].id).toBe(todolistId2);
@@ -35,7 +35,7 @@ test('correct todolist should be added', () => {
         {id: todolistId2, title: "What to buy", filter: "all"}
     ]
 
-    const endState = todolistReducer(startState, AddTodolistAC(newTodolistTitle))
+    const endState = todolistReducer(startState, addTodolistAC(newTodolistTitle))
 
     expect(endState.length).toBe(3);
     expect(endState[2].title).toBe(newTodolistTitle);
@@ -53,7 +53,7 @@ test('correct todolist should change its name', () => {
         {id: todolistId2, title: "What to buy", filter: "all"}
     ]
 
-    const action =  ChangeTodolistTitleAT(todolistId2, newTodolistTitle)
+    const action =  changeTodolistTitleAT(todolistId2, newTodolistTitle)
 
     const endState = todolistReducer(startState, action);
 
@@ -73,7 +73,7 @@ test('correct filter of todolist should be changed', () => {
         {id: todolistId2, title: "What to buy", filter: "all"}
     ]
 
-    const action = ChangeTodolistFilterAT(todolistId2, newFilter)
+    const action = changeTodolistFilterAT(todolistId2, newFilter)
 
     const endState = todolistReducer(startState, action);
 

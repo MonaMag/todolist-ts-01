@@ -34,7 +34,7 @@ export type ActionsType = RemoveTaskActionType
     | AddTaskActionType |  ChangeTaskStatusActionType
     | ChangeTaskTitleActionType | AddTodolistAT |RemoveTodolistAT;
 
-export const tasksReducer = (state: TaskStateType, action: ActionsType) => {
+export const tasksReducer = (state: TaskStateType, action: ActionsType):TaskStateType => {
     switch (action.type){
         case 'REMOVE_TASK':
             return {
@@ -58,7 +58,6 @@ export const tasksReducer = (state: TaskStateType, action: ActionsType) => {
                         return task
                 } )
             }
-
         case 'CHANGE_TASK_TITLE':
             return {
                 ...state,
@@ -79,10 +78,7 @@ export const tasksReducer = (state: TaskStateType, action: ActionsType) => {
         case 'REMOVE-TODOLIST':
             let newState = {...state}
             delete newState[action.todolistID]
-            return {
-                ...state,
-                [action.todolistID]: []
-            }
+            return newState;
 
         default:
             throw new Error('I do not understand this type')
@@ -90,10 +86,9 @@ export const tasksReducer = (state: TaskStateType, action: ActionsType) => {
 }
 
 
-
 //функция создяния объекта действия
 export const  removeTaskAC = (taskID: string, todolistID: string): RemoveTaskActionType => {
-    return { type: 'REMOVE_TASK', taskID, todolistID}
+    return { type: 'REMOVE_TASK', taskID: taskID, todolistID: todolistID}
 }
 
 export const  addTaskAC = (title: string, todolistID: string): AddTaskActionType => {
