@@ -1,27 +1,34 @@
-import React, {useState, ChangeEvent} from "react";
+import React, {useState, ChangeEvent, useCallback} from "react";
 import {TextField} from "@material-ui/core";
 
 export type EditableSpanType = {
-    title: string
+    value: string
     changeTitle: (title: string) => void
 }
 
-export function EditableSpan(props: EditableSpanType) {
+export const EditableSpan = React.memo((props: EditableSpanType) => {
+    const {
+        value,
+        changeTitle
+    } = props;
 
-    const [title, setTitle] = useState<string>(props.title)
+    const [title, setTitle] = useState<string>(value)
     const [editMode, setEditMode] = useState<boolean>(false)
 
     const onChangeTitle = (e: ChangeEvent<HTMLInputElement>) => {
         setTitle(e.currentTarget.value);
     }
 
-    const onEditMode = () => {
+    const onEditMode = useCallback( () => {
         setEditMode(true)
-    }
-    const offEditMode = () => {
+        changeTitle(value)
+    }, [changeTitle, value])
+
+    const offEditMode = useCallback(() => {
         setEditMode(false)
-        props.changeTitle(title);
-    }
+        changeTitle(title);
+    }, [changeTitle, value])
+
 
     return (
         editMode
@@ -31,6 +38,6 @@ export function EditableSpan(props: EditableSpanType) {
                 onBlur={offEditMode}
                 autoFocus
             />
-            : <span onDoubleClick={onEditMode}>{props.title}</span>
+            : <span onDoubleClick={onEditMode}>{value}</span>
     )
-}
+})
