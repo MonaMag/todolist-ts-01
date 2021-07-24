@@ -26,10 +26,11 @@ export type FilterValuesType = 'all' | 'active' | 'completed';
 
 
 const AppWithRedux = () => {
+    console.log('App is called')
 //BLL:
-    const todolists = useSelector<AppRootStateType, TodoListType[]>(state => state.todolists)
-    const tasks = useSelector<AppRootStateType, TaskStateType>(state => state.tasks)
-    const dispatch = useDispatch()
+    const todolists = useSelector<AppRootStateType, TodoListType[]>(state => state.todolists);
+    const tasks = useSelector<AppRootStateType, TaskStateType>(state => state.tasks);
+    const dispatch = useDispatch();
 
 //Tasks
     const removeTask = useCallback((taskID: string, todolistID: string) => {
@@ -120,6 +121,7 @@ const AppWithRedux = () => {
                         color="inherit">Login</Button>
                 </Toolbar>
             </AppBar>
+
             <Container fixed>
                 <Grid container style={{padding: '20px 0'}}>
                     <AddItemForm addItem={addTodoList}/>

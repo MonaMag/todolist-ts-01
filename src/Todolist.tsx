@@ -6,7 +6,6 @@ import {Button, IconButton} from "@material-ui/core";
 import {Delete} from "@material-ui/icons";
 import {Task} from "./Task";
 
-
 type TodolistPropsType = {
     title: string
     todolistID: string
@@ -50,7 +49,7 @@ export const Todolist = React.memo((props: TodolistPropsType) => {
         tasksForTodolist = tasks.filter(t => t.isDone)
     }
     if (filter === 'active') {
-        tasksForTodolist = tasks.filter(t => t.isDone)
+        tasksForTodolist = tasks.filter(t => !t.isDone)
     }
 
 
@@ -75,13 +74,14 @@ export const Todolist = React.memo((props: TodolistPropsType) => {
                         changeTitle={changeTodolistTitleHandler}
                     />
                     <IconButton onClick={onClickDeleteTodoList}>
-                        <Delete color="secondary"/>
+                        <Delete/>
                     </IconButton>
                 </h3>
                 <AddItemForm addItem={addTaskHandler}/>
                 <ul style={{listStyle: 'none', paddingLeft: '0'}}>
                     {tasksNew}
                 </ul>
+
                 <div>
                     <Button
                         style={{marginLeft: '3px'}}
