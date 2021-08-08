@@ -6,7 +6,7 @@ import {TasksType} from "./AppWithRedux";
 
 export type TasksPropsType = {
     task: TasksType
-    removeTask: (taskID: string, todoListID: string) => void;
+    removeTask: (taskID: string, todoListID: string) => void
     todolistID: string
     changeTaskStatus: (taskId: string, newIsDoneValue: boolean, todoListID: string) => void
     changeTaskTitle: (taskId: string, title: string, todoListID: string) => void

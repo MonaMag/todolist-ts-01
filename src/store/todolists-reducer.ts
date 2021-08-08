@@ -28,7 +28,6 @@ type ChangeTodolistFilterAT = {
     type: 'CHANGE-TODOLIST-FILTER'
     filter: FilterValuesType
     todolistID: string
-
 }
 
 export type ActionUnionType = RemoveTodolistAT | AddTodolistAT | ChangeTodolistTitleAT | ChangeTodolistFilterAT;
