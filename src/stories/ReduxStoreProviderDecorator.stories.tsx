@@ -10,12 +10,12 @@ import {todolistReducer} from "../store/todolists-reducer";
 
 const rootReducer = combineReducers({
     tasks: tasksReducer,
-    todoLists: todolistReducer
+    todolists: todolistReducer
 })
 
 //* initial state for storybook tests only
 const initialGlobalState = {
-    todoLists: [
+    todolists: [
         {id: 'todolistId1', title: 'What to learn', filter: 'all'},
         {id: 'todolistId2', title: 'What to buy', filter: 'all'}
     ],

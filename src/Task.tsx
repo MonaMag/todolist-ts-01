@@ -41,7 +41,7 @@ export const Task = React.memo((props: TasksPropsType) => {
                 changeTitle={changeTaskTitleHandler}
                 value={task.title}/>
             <IconButton onClick={removeTaskHandler}>
-                <Delete color="secondary"/>
+                <Delete/>
             </IconButton>
         </div>
     )

@@ -36,13 +36,16 @@ export const Todolist = React.memo((props: TodolistPropsType) => {
         changeTodolistTitle
     } = props;
 
-    const onClickAllFilter = useCallback( () => changeFilter('all', todolistID), [changeFilter, todolistID])
-    const onClickActiveFilter = useCallback( () => changeFilter('active', todolistID), [changeFilter, todolistID])
-    const onClickCompletedFilter = useCallback( () => changeFilter('completed', todolistID), [changeFilter, todolistID])
+    const onClickAllFilter = useCallback(() => changeFilter('all', todolistID), [changeFilter, todolistID])
+    const onClickActiveFilter = useCallback(() => changeFilter('active', todolistID), [changeFilter, todolistID])
+    const onClickCompletedFilter = useCallback(() => changeFilter('completed', todolistID), [changeFilter, todolistID])
 
-    const onClickDeleteTodoList = useCallback( () => deleteTodoList(todolistID), [deleteTodoList, todolistID])
-    const changeTodolistTitleHandler = useCallback( (title: string) => changeTodolistTitle(title, todolistID), [changeTodolistTitle, todolistID])
-    const addTaskHandler = useCallback(  (title: string) => {addTask(title, todolistID)}, [addTask, todolistID])
+    const onClickDeleteTodoList = useCallback(() => deleteTodoList(todolistID), [deleteTodoList, todolistID])
+    const changeTodolistTitleHandler = useCallback((newTitle: string) => changeTodolistTitle(todolistID, newTitle ), [changeTodolistTitle, todolistID])
+
+    const addTaskHandler = useCallback((title: string) => {
+        addTask(title, todolistID)
+    }, [addTask, todolistID])
 
     let tasksForTodolist = tasks;
     if (filter === 'completed') {
@@ -51,18 +54,6 @@ export const Todolist = React.memo((props: TodolistPropsType) => {
     if (filter === 'active') {
         tasksForTodolist = tasks.filter(t => !t.isDone)
     }
-
-
-    const tasksNew = tasksForTodolist.map(t => {
-        return <Task
-            task={t}
-            key={t.id}
-            removeTask={removeTask}
-            todolistID={todolistID}
-            changeTaskStatus={changeTaskStatus}
-            changeTaskTitle={changeTaskTitle}
-            />
-    })
 
 
     return (
@@ -79,7 +70,16 @@ export const Todolist = React.memo((props: TodolistPropsType) => {
                 </h3>
                 <AddItemForm addItem={addTaskHandler}/>
                 <ul style={{listStyle: 'none', paddingLeft: '0'}}>
-                    {tasksNew}
+                    {tasksForTodolist.map(t => {
+                        return <Task
+                            task={t}
+                            key={t.id}
+                            removeTask={removeTask}
+                            todolistID={todolistID}
+                            changeTaskStatus={changeTaskStatus}
+                            changeTaskTitle={changeTaskTitle}
+                        />
+                    })}
                 </ul>
 
                 <div>
@@ -105,4 +105,4 @@ export const Todolist = React.memo((props: TodolistPropsType) => {
             </div>
         </div>
     )
-} )
+})

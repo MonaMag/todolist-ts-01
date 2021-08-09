@@ -47,6 +47,7 @@ export const todolistReducer = (state= initialState, action: ActionUnionType):Ar
             return state.filter(tl => tl.id !== action.todolistID)
 
         case CHANGE_TODOLIST_TITLE:
+            debugger
             return state.map(tl => tl.id === action.todolistID
                 ? {...tl, title: action.newTitle}
                 : tl)
@@ -68,7 +69,7 @@ export const addTodolistAC = (title: string):  AddTodolistAT=> {
     return { type: 'ADD-TODOLIST', title: title, todolistID: v1()}
 }
 
-export const changeTodolistTitleAT = (title: string, todoListID: string):  ChangeTodolistTitleAT=> {
+export const changeTodolistTitleAT = ( todoListID: string, title: string):  ChangeTodolistTitleAT=> {
     return { type: 'CHANGE-TODOLIST-TITLE', newTitle: title, todolistID: todoListID}
 }
 

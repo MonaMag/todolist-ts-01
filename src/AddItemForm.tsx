@@ -8,18 +8,17 @@ export type AddItemFormType = {
 
 export const AddItemForm = React.memo((props: AddItemFormType) => {
     console.log('AddItemForm is called')
-    const {
-        addItem
-    } = props;
+    const {addItem} = props;
 
+//* useState
     const [error, setError] = useState<string | null>(null);
     const [title, setTitle] = useState<string>('')
 
+//* Callbacks for adding new task, onChange and keyPress events
     const onClickAddItem = () => {
         const trimmedTitle = title.trim();
         if (trimmedTitle) {
             addItem(trimmedTitle)
-            //addItem(trimmedTitle)
             setTitle('');
         } else {
             setError('Title is required');
