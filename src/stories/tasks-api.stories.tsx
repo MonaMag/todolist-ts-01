@@ -117,17 +117,17 @@ export const UpdateTask = () => {
             <div>
                 <input
                     type="text"
-                    placeholder={'id of todo list'}
+                    placeholder={'id of todolist'}
                     value={todolistId}
                     onChange={(e) => setTodolistId(e.currentTarget.value)}/>
                 <input
                     type="text"
-                    placeholder={'id of task u want to update'}
+                    placeholder={'id of task'}
                     value={taskId}
                     onChange={(e) => setTaskId(e.currentTarget.value)}/>
                 <input
                     type="text"
-                    placeholder={'new title to update'}
+                    placeholder={'new title'}
                     value={updatedTitle}
                     onChange={(e) => setUpdatedTitle(e.currentTarget.value)}/>
             </div>

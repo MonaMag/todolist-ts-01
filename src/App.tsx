@@ -1,91 +1,134 @@
-import React, {useCallback} from 'react';
+import React, {useState} from 'react';
 import './App.css';
 import {Todolist} from "./Todolist";
 import {v1} from 'uuid';
 import {AddItemForm} from "./AddItemForm";
 import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from "@material-ui/core";
 import {Menu} from "@material-ui/icons";
-import {useDispatch, useSelector} from "react-redux";
-import {AppRootStateType} from "./store/store";
-import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC} from "./store/tasks-reducer";
-import {
-    addTodolistAC,
-    changeTodolistFilterAT,
-    changeTodolistTitleAT,
-    removeTodolistAC
-} from "./store/todolists-reducer";
+import {FilterValuesType, TodolistDomainType} from "./store/todolists-reducer";
+import {TaskPriorities, TaskStatuses, TaskType} from "./api/tasks-api";
 
-export type TasksType = {
-    id: string
-    title: string
-    isDone: boolean
-}
-export type TodoListType = {
-    id: string
-    title: string
-    filter: FilterValuesType
-}
-export type TasksStateType = {
-    [key: string]: Array<TasksType>
-}
 
-export type FilterValuesType = 'all' | 'active' | 'completed';
+export type TaskStateType = {
+    [key: string]: Array<TaskType>
+}
 
 function App() {
 //BLL:
     const todoListID_1 = v1();
     const todoListID_2 = v1();
 
-    const todolists = useSelector<AppRootStateType, Array<TodoListType>>(state => state.todolists)
-    const tasks = useSelector<AppRootStateType, TasksStateType>(state => state.tasks)
-    const dispatch = useDispatch();
+    const [todoLists, setTodoLists] = useState<Array<TodolistDomainType>>([
+        {id: todoListID_1, title: 'What to learn', filter: 'all', addedData: '', order: 0},
+        {id: todoListID_2, title: 'What to bye', filter: 'all', addedData: '', order: 0},
+    ])
 
-//* Callbacks for Tasks
-    const removeTask = useCallback(function (id: string, todolistId: string) {
-        const action = removeTaskAC(id, todolistId);
-        dispatch(action);
-    }, []);
+    const [tasks, setTasks] = useState<TaskStateType>({
+        [todoListID_1]: [
+            {
+                id: v1(), title: 'HTML', status: TaskStatuses.Completed, priority: TaskPriorities.Middle,
+                addedDate: '', order: 0, startDate: '', deadline: '', todoListId: todoListID_1, description: ''
+            },
+            {
+                id: v1(), title: 'CSS', status: TaskStatuses.Completed, priority: TaskPriorities.Middle,
+                addedDate: '', order: 0, startDate: '', deadline: '', todoListId: todoListID_1, description: ''
+            },
+            {
+                id: v1(), title: 'JS', status: TaskStatuses.New, priority: TaskPriorities.Middle,
+                addedDate: '', order: 0, startDate: '', deadline: '', todoListId: todoListID_1, description: ''
+            },
+            {
+                id: v1(), title: 'React', status: TaskStatuses.New, priority: TaskPriorities.Middle,
+                addedDate: '', order: 0, startDate: '', deadline: '', todoListId: todoListID_1, description: ''
+            },
+        ],
+        [todoListID_2]: [
+            {
+                id: v1(), title: 'Milk', status: TaskStatuses.Completed, priority: TaskPriorities.Middle,
+                addedDate: '', order: 0, startDate: '', deadline: '', todoListId: todoListID_2, description: ''
+            },
+            {
+                id: v1(), title: 'Salt', status: TaskStatuses.Completed, priority: TaskPriorities.Middle,
+                addedDate: '', order: 0, startDate: '', deadline: '', todoListId: todoListID_2, description: ''
+            },
+            {
+                id: v1(), title: 'Bread', status: TaskStatuses.Completed, priority: TaskPriorities.Middle,
+                addedDate: '', order: 0, startDate: '', deadline: '', todoListId: todoListID_2, description: ''
+            },
+            {
+                id: v1(), title: 'Butter', status: TaskStatuses.New, priority: TaskPriorities.Middle,
+                addedDate: '', order: 0, startDate: '', deadline: '', todoListId: todoListID_2, description: ''
+            },
+        ]
+    })
 
-    const addTask = useCallback(function (title: string, todolistId: string) {
-        const action = addTaskAC(title, todolistId);
-        dispatch(action);
-    }, []);
+    //* Callbacks for Tasks
+    function addTask(title: string, todolistID: string) {
+        const newTask: TaskType = {
+            id: v1(),
+            title,
+            status: TaskStatuses.New, priority: TaskPriorities.Middle,
+            addedDate: '', order: 0, startDate: '', deadline: '', todoListId: todolistID, description: ''
+        }
+        setTasks({...tasks, [todolistID]: [newTask, ...tasks[todolistID]]});
+    }
 
-    const changeTaskStatus = useCallback(function (id: string, isDone: boolean, todolistId: string) {
-        const action = changeTaskStatusAC(id, isDone, todolistId);
-        dispatch(action);
-    }, []);
+    function removeTask(taskID: string, todolistID: string) {
+        tasks[todolistID] = tasks[todolistID].filter((task) => task.id !== taskID);
+        setTasks({...tasks})
+    }
 
-    const changeTaskTitle = useCallback(function (id: string, newTitle: string, todolistId: string) {
-        const action = changeTaskTitleAC(id, newTitle, todolistId);
-        dispatch(action);
-    }, []);
+    function changeTaskStatus(taskId: string, status: TaskStatuses, todoListID: string) {
+        tasks[todoListID] = tasks[todoListID].map(t =>
+            t.id === taskId
+                ? {...t, status: status}
+                : t)
+        setTasks({...tasks})
+    }
+
+    function changeTaskTitle(taskId: string, newTitle: string, todoListID: string) {
+        setTasks({
+            ...tasks,
+            [todoListID]: tasks[todoListID].map(t =>
+                t.id === taskId
+                    ? {...t, title: newTitle}
+                    : t)
+        })
+    }
 
 
     //* Callbacks for Todolists
-    const removeTodolist = useCallback(function (id: string) {
-        const action = removeTodolistAC(id);
-        dispatch(action);
-    }, []);
+    function changeFilter(value: FilterValuesType, todolistID: string) {
+        setTodoLists(todoLists.map(tl => tl.id === todolistID
+            ? {...tl, filter: value}
+            : tl))
+    }
 
-    const addTodolist = useCallback((title: string) => {
-        const action = addTodolistAC(title);
-        dispatch(action);
-    }, [dispatch]);
+    function addTodoList(title: string) {
+        const newTodolistID = v1();
+        const newTodoList: TodolistDomainType = {
+            id: newTodolistID,
+            title: title,
+            addedData: '',
+            order: 0,
+            filter: 'all',
+        }
+        setTodoLists([...todoLists, newTodoList])
+        setTasks({
+            ...tasks, [newTodolistID]: []
+        })
+    }
 
-    const changeTodolistTitle = useCallback(function (id: string, title: string) {
-        debugger
-        const action = changeTodolistTitleAT(id, title);
-        dispatch(action);
-    }, []);
+    function removeTodoList(todolistID: string) {
+        setTodoLists(todoLists.filter(el => el.id !== todolistID))
+        delete tasks[todolistID];
+    }
 
-    const changeFilter = useCallback(function (value: FilterValuesType, todolistId: string) {
-        const action = changeTodolistFilterAT(todolistId, value);
-        dispatch(action);
-    }, []);
-
-
-
+    function changeTodolistTitle(newTitle: string, todolistID: string) {
+        setTodoLists(todoLists.map(tl => tl.id === todolistID
+            ? {...tl, title: newTitle}
+            : tl))
+    }
 
 
     //UI:
@@ -104,31 +147,34 @@ function App() {
                         color="inherit">Login</Button>
                 </Toolbar>
             </AppBar>
-
             <Container fixed>
-
                 <Grid container style={{padding: '20px 0'}}>
-                    <AddItemForm addItem={addTodolist}/>
+                    <AddItemForm addItem={addTodoList}/>
                 </Grid>
-
                 <Grid
                     container spacing={3}
                     style={{justifyContent: 'space-evenly'}}>
-
-                    {todolists.map(tl => {
+                    {todoLists.map(tl => {
+                        let tasksForTodolist = tasks[tl.id]
+                        if (tl.filter === 'completed') {
+                            tasksForTodolist = tasks[tl.id].filter(t => t.status === TaskStatuses.Completed)
+                        }
+                        if (tl.filter === 'active') {
+                            tasksForTodolist = tasks[tl.id].filter(t => t.status === TaskStatuses.New)
+                        }
                         return (
                             <Grid item key={tl.id}>
                                 <Paper elevation={20} style={{padding: '15px'}}>
                                     <Todolist
-                                        todolistID={tl.id}
-                                        deleteTodoList={removeTodolist}
-                                        tasks={tasks[tl.title]}
                                         title={tl.title}
                                         filter={tl.filter}
+                                        tasks={tasksForTodolist}
+                                        todolistID={tl.id}
                                         addTask={addTask}
+                                        removeTask={removeTask}
                                         changeTaskTitle={changeTaskTitle}
                                         changeTaskStatus={changeTaskStatus}
-                                        removeTask={removeTask}
+                                        deleteTodoList={removeTodoList}
                                         changeFilter={changeFilter}
                                         changeTodolistTitle={changeTodolistTitle}
                                     />
@@ -137,7 +183,6 @@ function App() {
                         )
                     })}
                 </Grid>
-
             </Container>
         </div>
     )

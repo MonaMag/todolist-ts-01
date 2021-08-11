@@ -11,9 +11,8 @@ const instance = axios.create({
 export type TaskType = {
     description: string
     title: string
-    status: number
-    isDone: boolean
-    priority: number
+    status: TaskStatuses
+    priority:TaskPriorities
     startDate: string
     deadline: string
     id: string
@@ -22,22 +21,36 @@ export type TaskType = {
     addedDate: string
 }
 
-export type TaskUpdateModelType = {
-    title: string
-    description: string
-    isDone: boolean
-    status: number
-    priority: number
-    startDate: string | null
-    deadline: string | null
-}
-
-
 type GetTasksResponseType = {
     items: TaskType[]
     totalCount: number
     error: string | null
 }
+
+export enum TaskStatuses {
+    New = 0,
+    InProgress = 1,
+    Completed = 2,
+    Draft = 3
+}
+
+export enum TaskPriorities {
+    Low = 0,
+    Middle = 1,
+    Hi = 2,
+    Urgently = 3,
+    Later = 4
+}
+
+export type TaskUpdateModelType = {
+    title: string
+    description: string
+    status: TaskStatuses
+    priority:TaskPriorities
+    startDate: string
+    deadline: string
+}
+
 
 /*type CreateTaskResponseType = {
     resultCode: number
@@ -46,20 +59,16 @@ type GetTasksResponseType = {
         item:  TaskType
     }
 }
-
 type DeleteTaskResponseType = {
     resultCode: number
     messages: Array<string>
     data: {}
 }
-
 type UpdateTaskResponseType = {
     resultCode: number
     messages: Array<string>
     data: {}
 }*/
-
-
 type ResponseType<D = {}> = {
     resultCode: number
     messages: Array<string>
