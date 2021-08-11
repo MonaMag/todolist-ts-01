@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import {tasksAPI, TaskType, TaskUpdateModelType} from "../api/tasks-api";
+import {tasksAPI, TaskStatuses, TaskType, TaskUpdateModelType} from "../api/tasks-api";
 
 export default {
     title: 'API/tasks'
@@ -98,11 +98,10 @@ export const UpdateTask = () => {
     const updateTaskModel: TaskUpdateModelType = {
         title: updatedTitle,
         description: 'task, that I update in UpdateTask story',
-        deadline: null,
-        isDone: true,
+        deadline: '',
+        status: TaskStatuses.Completed,
         priority: 33,
-        startDate: null,
-        status: 66
+        startDate: '',
     }
     const updateTask = (todolistId: string, taskId: string, model: TaskUpdateModelType) => {
         tasksAPI.updateTask(todolistId, taskId, model)

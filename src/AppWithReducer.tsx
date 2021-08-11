@@ -7,8 +7,8 @@ import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography}
 import {Menu} from "@material-ui/icons";
 import {
     addTodolistAC,
-    changeTodolistFilterAT,
-    changeTodolistTitleAT, FilterValuesType,
+    changeTodolistFilterAC,
+    changeTodolistTitleAC, FilterValuesType,
     removeTodolistAC, TodolistDomainType,
     todolistReducer
 } from "./store/todolists-reducer";
@@ -69,7 +69,7 @@ function AppWithReducer() {
 
     //todoLists:
     function changeFilter(value: FilterValuesType, todolistID: string) {
-        let action = changeTodolistFilterAT(todolistID, value);
+        let action = changeTodolistFilterAC(todolistID, value);
         dispatchToTodoLists(action);
     }
     function addTodoList(title: string) {
@@ -84,7 +84,7 @@ function AppWithReducer() {
         dispatchToTasks(action);
     }
     function changeTodolistTitle(newTitle: string, todolistID: string) {
-        let action = changeTodolistTitleAT(newTitle, todolistID);
+        let action = changeTodolistTitleAC(newTitle, todolistID);
         dispatchToTodoLists(action);
 
     }
