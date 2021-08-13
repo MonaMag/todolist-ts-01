@@ -11,14 +11,14 @@ let todolistId1: string;
 let todolistId2: string;
 let startState: Array<TodolistDomainType>
 
-beforeEach( () => {
+beforeEach(() => {
     todolistId1 = v1();
     todolistId2 = v1();
 
     startState = [
-        {id: todolistId1, title: "What to learn", filter: "all", addedData: '', order: 0},
-        {id: todolistId2, title: "What to buy", filter: "all", addedData: '', order: 0}
-]
+        {id: todolistId1, title: "What to learn", filter: "all", addedDate: '', order: 0},
+        {id: todolistId2, title: "What to buy", filter: "all", addedDate: '', order: 0}
+    ]
 })
 
 
@@ -32,21 +32,29 @@ test('correct todolist should be removed', () => {
 
 
 test('correct todolist should be added', () => {
-
-    let newTodolistTitle = "New Todolist";
-
-    const endState = todolistReducer(startState, addTodolistAC(newTodolistTitle))
+    const endState = todolistReducer(startState, addTodolistAC(
+        {
+            id: 'todoListID_1',
+            title: 'new todolist',
+            addedDate: '',
+            order: 0
+        }
+    ))
 
     expect(endState.length).toBe(3);
-    expect(endState[2].title).toBe(newTodolistTitle);
-});
+    expect(endState[0].title).toBe("new todolist");
+    expect(endState[1].title).toBe("What to learn");
+    expect(endState[2].title).toBe('What to buy');
+    expect(endState[0].id).not.toBe(todolistId1)
+    expect(endState[0].id).not.toBe(todolistId2)
 
+});
 
 test('correct todolist should change its name', () => {
 
     let newTodolistTitle = "New Todolist";
 
-    const action =  changeTodolistTitleAC(todolistId2, newTodolistTitle)
+    const action = changeTodolistTitleAC(todolistId2, newTodolistTitle)
 
     const endState = todolistReducer(startState, action);
 
