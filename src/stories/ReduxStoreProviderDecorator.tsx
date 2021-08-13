@@ -3,9 +3,9 @@ import {Provider} from 'react-redux'
 import {StoryFnReactReturnType} from '@storybook/react/dist/ts3.9/client/preview/types'
 import {combineReducers, createStore} from 'redux'
 import {v1} from 'uuid'
-import {tasksReducer} from "../store/tasks-reducer";
-import {AppRootStateType} from "../store/store";
-import {todolistReducer} from "../store/todolists-reducer";
+import {tasksReducer} from "../features/Todolists/tasks-reducer";
+import {AppRootStateType} from "../app/store";
+import {todolistReducer} from "../features/Todolists/todolists-reducer";
 import {TaskPriorities, TaskStatuses} from "../api/tasks-api";
 
 
@@ -17,8 +17,8 @@ const rootReducer = combineReducers({
 //* initial state for storybook tests only
 const initialGlobalState: AppRootStateType = {
     todolists: [
-        {id: 'todolistId1', title: 'What to learn', filter: 'all', addedData: '', order: 0},
-        {id: 'todolistId2', title: 'What to buy', filter: 'all', addedData: '', order: 0}
+        {id: 'todolistId1', title: 'What to learn', filter: 'all', addedDate: '', order: 0},
+        {id: 'todolistId2', title: 'What to buy', filter: 'all', addedDate: '', order: 0}
     ],
     tasks: {
         ['todolistId1']: [

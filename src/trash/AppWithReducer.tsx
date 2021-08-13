@@ -1,8 +1,8 @@
 import React, {useReducer} from 'react';
-import './App.css';
-import {Todolist} from "./Todolist";
+import '../app/App.css';
+import {Todolist} from "../features/Todolists/Todolist/Todolist";
 import {v1} from 'uuid';
-import {AddItemForm} from "./AddItemForm";
+import {AddItemForm} from "../components/AddItemForm/AddItemForm";
 import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from "@material-ui/core";
 import {Menu} from "@material-ui/icons";
 import {
@@ -11,9 +11,9 @@ import {
     changeTodolistTitleAC, FilterValuesType,
     removeTodolistAC, TodolistDomainType,
     todolistReducer
-} from "./store/todolists-reducer";
-import {addTaskAC, removeTaskAC, tasksReducer, updateTaskAC} from "./store/tasks-reducer";
-import {TaskPriorities, TaskStatuses, TaskType} from "./api/tasks-api";
+} from "../features/Todolists/todolists-reducer";
+import {addTaskAC, removeTaskAC, tasksReducer, updateTaskAC} from "../features/Todolists/tasks-reducer";
+import {TaskPriorities, TaskStatuses, TaskType} from "../api/tasks-api";
 
 
 export type TaskStateType = {
@@ -25,9 +25,9 @@ function AppWithReducer() {
     const todoListID_1 = v1();
     const todoListID_2 = v1();
 
-    const [todoLists, dispatchToTodoLists] = useReducer( todolistReducer, [
-        {id: todoListID_1, title: 'What to learn', filter: 'all', addedData: '', order: 0},
-        {id: todoListID_2, title: 'What to bye', filter: 'all', addedData: '', order: 0},
+    const [todoLists, dispatchToTodoLists] = useReducer(todolistReducer, [
+        {id: todoListID_1, title: 'What to learn', filter: 'all', addedDate: '', order: 0},
+        {id: todoListID_2, title: 'What to bye', filter: 'all', addedDate: '', order: 0},
     ])
 
     const [tasks, dispatchToTasks] = useReducer(tasksReducer, {
@@ -86,7 +86,7 @@ function AppWithReducer() {
     function addTodoList(title: string) {
         let action = addTodolistAC({
             id: v1(),
-            addedData: '',
+            addedDate: '',
             order: 0,
             title: title
         });

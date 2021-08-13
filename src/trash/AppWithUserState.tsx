@@ -1,64 +1,48 @@
 import React, {useState} from 'react';
-import './App.css';
-import {Todolist} from "./Todolist";
+import '../app/App.css';
+import {Todolist} from "../features/Todolists/Todolist/Todolist";
 import {v1} from 'uuid';
-import {AddItemForm} from "./AddItemForm";
+import {AddItemForm} from "../components/AddItemForm/AddItemForm";
 import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from "@material-ui/core";
 import {Menu} from "@material-ui/icons";
-import {FilterValuesType, TodolistDomainType} from "./store/todolists-reducer";
-import {TaskPriorities, TaskStatuses, TaskType} from "./api/tasks-api";
+import {FilterValuesType, TodolistDomainType} from "../features/Todolists/todolists-reducer";
+import {TaskPriorities, TaskStatuses, TaskType} from "../api/tasks-api";
 
 
 export type TaskStateType = {
     [key: string]: Array<TaskType>
 }
 
-function App() {
+function AppWithUserState() {
 //BLL:
     const todoListID_1 = v1();
     const todoListID_2 = v1();
 
     const [todoLists, setTodoLists] = useState<Array<TodolistDomainType>>([
-        {id: todoListID_1, title: 'What to learn', filter: 'all', addedData: '', order: 0},
-        {id: todoListID_2, title: 'What to bye', filter: 'all', addedData: '', order: 0},
+        {id: todoListID_1, title: 'What to learn', filter: 'all', addedDate: '', order: 0},
+        {id: todoListID_2, title: 'What to bye', filter: 'all', addedDate: '', order: 0},
     ])
 
     const [tasks, setTasks] = useState<TaskStateType>({
         [todoListID_1]: [
-            {
-                id: v1(), title: 'HTML', status: TaskStatuses.Completed, priority: TaskPriorities.Middle,
-                addedDate: '', order: 0, startDate: '', deadline: '', todoListId: todoListID_1, description: ''
-            },
-            {
-                id: v1(), title: 'CSS', status: TaskStatuses.Completed, priority: TaskPriorities.Middle,
-                addedDate: '', order: 0, startDate: '', deadline: '', todoListId: todoListID_1, description: ''
-            },
-            {
-                id: v1(), title: 'JS', status: TaskStatuses.New, priority: TaskPriorities.Middle,
-                addedDate: '', order: 0, startDate: '', deadline: '', todoListId: todoListID_1, description: ''
-            },
-            {
-                id: v1(), title: 'React', status: TaskStatuses.New, priority: TaskPriorities.Middle,
-                addedDate: '', order: 0, startDate: '', deadline: '', todoListId: todoListID_1, description: ''
-            },
+            {id: v1(), title: 'HTML', status: TaskStatuses.Completed, priority: TaskPriorities.Middle,
+                addedDate: '', order: 0, startDate: '', deadline: '', todoListId: todoListID_1, description: ''},
+            {id: v1(), title: 'CSS', status: TaskStatuses.Completed, priority: TaskPriorities.Middle,
+                addedDate: '', order: 0, startDate: '', deadline: '', todoListId: todoListID_1, description: ''},
+            {id: v1(), title: 'JS', status: TaskStatuses.New, priority: TaskPriorities.Middle,
+                addedDate: '', order: 0, startDate: '', deadline: '', todoListId: todoListID_1, description: ''},
+            {id: v1(), title: 'React', status: TaskStatuses.New, priority: TaskPriorities.Middle,
+                addedDate: '', order: 0, startDate: '', deadline: '', todoListId: todoListID_1, description: ''},
         ],
         [todoListID_2]: [
-            {
-                id: v1(), title: 'Milk', status: TaskStatuses.Completed, priority: TaskPriorities.Middle,
-                addedDate: '', order: 0, startDate: '', deadline: '', todoListId: todoListID_2, description: ''
-            },
-            {
-                id: v1(), title: 'Salt', status: TaskStatuses.Completed, priority: TaskPriorities.Middle,
-                addedDate: '', order: 0, startDate: '', deadline: '', todoListId: todoListID_2, description: ''
-            },
-            {
-                id: v1(), title: 'Bread', status: TaskStatuses.Completed, priority: TaskPriorities.Middle,
-                addedDate: '', order: 0, startDate: '', deadline: '', todoListId: todoListID_2, description: ''
-            },
-            {
-                id: v1(), title: 'Butter', status: TaskStatuses.New, priority: TaskPriorities.Middle,
-                addedDate: '', order: 0, startDate: '', deadline: '', todoListId: todoListID_2, description: ''
-            },
+            {id: v1(), title: 'Milk', status: TaskStatuses.Completed, priority: TaskPriorities.Middle,
+                addedDate: '', order: 0, startDate: '', deadline: '', todoListId: todoListID_2, description: ''},
+            {id: v1(), title: 'Salt', status: TaskStatuses.Completed, priority: TaskPriorities.Middle,
+                addedDate: '', order: 0, startDate: '', deadline: '', todoListId: todoListID_2, description: ''},
+            {id: v1(), title: 'Bread', status: TaskStatuses.Completed, priority: TaskPriorities.Middle,
+                addedDate: '', order: 0, startDate: '', deadline: '', todoListId: todoListID_2, description: ''},
+            {id: v1(), title: 'Butter', status: TaskStatuses.New, priority: TaskPriorities.Middle,
+                addedDate: '', order: 0, startDate: '', deadline: '', todoListId: todoListID_2, description: ''},
         ]
     })
 
@@ -109,7 +93,7 @@ function App() {
         const newTodoList: TodolistDomainType = {
             id: newTodolistID,
             title: title,
-            addedData: '',
+            addedDate: '',
             order: 0,
             filter: 'all',
         }
@@ -188,4 +172,4 @@ function App() {
     )
 }
 
-export default App;
+export default AppWithUserState;

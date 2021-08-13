@@ -1,9 +1,9 @@
-/*.App {
+/*.AppWithUserState {
   padding: 30px;
   display: flex;
 }
 
-.App > div {
+.AppWithUserState > div {
   margin-right: 50px;
 }*/
 
