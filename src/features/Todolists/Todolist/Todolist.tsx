@@ -21,6 +21,7 @@ export type TodolistPropsType = {
     addTask: (title: string, todolistID: string) => void
     changeTaskStatus: (taskId: string, status: TaskStatuses, todolistID: string) => void
     changeTodolistTitle: (newTitle: string, todolistID: string) => void
+    demo?: boolean
 }
 
 export const Todolist = React.memo((props: TodolistPropsType) => {
@@ -36,12 +37,16 @@ export const Todolist = React.memo((props: TodolistPropsType) => {
         changeTaskStatus,
         deleteTodoList,
         changeFilter,
-        changeTodolistTitle
+        changeTodolistTitle,
+        demo = false
     } = props;
 
     const dispatch = useDispatch();
 
     useEffect(() => {
+        if(demo) {
+            return
+        }
         dispatch(fetchTasksTC(todolistID))
     }, [])
 

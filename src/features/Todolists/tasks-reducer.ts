@@ -2,6 +2,7 @@ import {AddTodolistActionType, RemoveTodolistActionType, SetTodolistActionType} 
 import {TaskPriorities, tasksAPI, TaskStatuses, TaskType, TaskUpdateModelType} from "../../api/tasks-api";
 import {Dispatch} from "redux";
 import {AppRootStateType} from "../../app/store";
+import {AppActionsType, setAppError, setAppStatus, SetErrorAT} from "../../app/app-reducer";
 
 //types
 const REMOVE_TASK = 'REMOVE_TASK';
@@ -78,10 +79,12 @@ export const setTasksAC = (tasks: Array<TaskType>, todolistID: string) =>
 
 //thunks
 export const fetchTasksTC = (todolistId: string) => {
-    return (dispatch: Dispatch<TasksActionsType>) => {
+    return (dispatch: Dispatch<TasksActionsType | AppActionsType>) => {
+        dispatch(setAppStatus('loading'))
         tasksAPI.getTasks(todolistId)
             .then(res => {
-                dispatch(setTasksAC(res.data.items, todolistId))
+                dispatch(setTasksAC(res.data.items, todolistId));
+
             })
     }
 }
@@ -92,11 +95,22 @@ export const removeTaskTC = (todolistID: string, taskID: string) => (dispatch: D
                 dispatch(action);
             })
     }
-export const addTaskTC = (title: string, todolistID: string) => (dispatch: Dispatch<TasksActionsType>) => {
+export const addTaskTC = (title: string, todolistID: string) => (dispatch: Dispatch<TasksActionsType | SetErrorAT | AppActionsType>) => {
+    dispatch(setAppStatus('loading'))
         tasksAPI.createTask(todolistID, title)
             .then(res => {
-                let action = addTaskAC(res.data.data.item);
-                dispatch(action);
+                if(res.data.resultCode === 0) {
+                    const action = addTaskAC(res.data.data.item);
+                    dispatch(action);
+                    dispatch(setAppStatus('succeeded'));
+                } else {
+                    if(res.data.messages.length) {
+                        dispatch(setAppError(res.data.messages[0]));
+                    } else {
+                        dispatch(setAppError('Some error occurred'));
+                        dispatch(setAppStatus('failed'));
+                    }
+                }
             })
     }
 

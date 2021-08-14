@@ -1,24 +1,27 @@
 import React from 'react'
 import {Provider} from 'react-redux'
 import {StoryFnReactReturnType} from '@storybook/react/dist/ts3.9/client/preview/types'
-import {combineReducers, createStore} from 'redux'
+import {applyMiddleware, combineReducers, createStore} from 'redux'
 import {v1} from 'uuid'
 import {tasksReducer} from "../features/Todolists/tasks-reducer";
 import {AppRootStateType} from "../app/store";
 import {todolistReducer} from "../features/Todolists/todolists-reducer";
 import {TaskPriorities, TaskStatuses} from "../api/tasks-api";
+import {appReducer} from "../app/app-reducer";
+import thunkMiddleware from "redux-thunk";
 
 
 const rootReducer = combineReducers({
     tasks: tasksReducer,
-    todolists: todolistReducer
+    todolists: todolistReducer,
+    app: appReducer
 })
 
 //* initial state for storybook tests only
 const initialGlobalState: AppRootStateType = {
     todolists: [
-        {id: 'todolistId1', title: 'What to learn', filter: 'all', addedDate: '', order: 0},
-        {id: 'todolistId2', title: 'What to buy', filter: 'all', addedDate: '', order: 0}
+        {id: 'todolistId1', title: 'What to learn', filter: 'all', entityStatus: 'idle', addedDate: '', order: 0},
+        {id: 'todolistId2', title: 'What to buy', filter: 'all', entityStatus: 'idle', addedDate: '', order: 0}
     ],
     tasks: {
         ['todolistId1']: [
@@ -37,11 +40,15 @@ const initialGlobalState: AppRootStateType = {
             {id: v1(), title: 'Angular Book', status: TaskStatuses.New, priority: TaskPriorities.Middle,
                 addedDate: '', order: 0, startDate: '', deadline: '', todoListId: 'todolistId2', description: ''},
         ]
+    },
+    app: {
+        error: null,
+        status: 'idle'
     }
 };
 
 //* Store for storybook tests only
-const storyBookStore = createStore(rootReducer, initialGlobalState);
+const storyBookStore = createStore(rootReducer, initialGlobalState, applyMiddleware(thunkMiddleware));
 
 //* Provider decoration for storybook tests
 export const ReduxStoreProviderDecorator = (storyFn: () => StoryFnReactReturnType) => {

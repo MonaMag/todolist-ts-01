@@ -15,10 +15,10 @@ import {AddItemForm} from "../../components/AddItemForm/AddItemForm";
 import {Todolist} from "./Todolist/Todolist";
 
 
-
-
-
-export const Todolists = () => {
+type PropsType = {
+    demo?: boolean
+}
+export const Todolists = ({demo = false}: PropsType) => {
     console.log('Todolists R')
 //BLL:
     const dispatch = useDispatch();
@@ -30,6 +30,9 @@ export const Todolists = () => {
     const tasks = useSelector<AppRootStateType, TaskStateType>(state => state.tasks);
 
     useEffect(() => {
+        if(demo) {
+            return
+        }
         dispatch(fetchTodolistsTC());
     }, [])
 
@@ -101,6 +104,7 @@ export const Todolists = () => {
                                     removeTask={removeTask}
                                     changeFilter={changeFilter}
                                     changeTodolistTitle={changeTodolistTitle}
+                                    demo={demo}
                                 />
                             </Paper>
                         </Grid>
