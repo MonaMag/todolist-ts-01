@@ -15,3 +15,6 @@ export default {
 const Template: Story = (args) => <App {...args}/>
 
 export const AppBaseExample = Template.bind({})
+AppBaseExample.args = {
+    demo: true
+}

@@ -26,8 +26,8 @@ function AppWithReducer() {
     const todoListID_2 = v1();
 
     const [todoLists, dispatchToTodoLists] = useReducer(todolistReducer, [
-        {id: todoListID_1, title: 'What to learn', filter: 'all', addedDate: '', order: 0},
-        {id: todoListID_2, title: 'What to bye', filter: 'all', addedDate: '', order: 0},
+        {id: todoListID_1, title: 'What to learn', filter: 'all', entityStatus: 'idle', addedDate: '', order: 0},
+        {id: todoListID_2, title: 'What to bye', filter: 'all', entityStatus: 'idle', addedDate: '', order: 0},
     ])
 
     const [tasks, dispatchToTasks] = useReducer(tasksReducer, {
@@ -122,11 +122,9 @@ function AppWithReducer() {
             <Grid item key={tl.id}>
                 <Paper elevation={20} style={{padding: '15px'}}>
                     <Todolist
-                        todolistID={tl.id}
+                        todolist={tl}
                         deleteTodoList={removeTodoList}
                         tasks={getTaskForTodoList(tl)}
-                        title={tl.title}
-                        filter={tl.filter}
                         addTask={addTask}
                         changeTaskTitle={changeTaskTitle}
                         changeTaskStatus={changeTaskStatus}

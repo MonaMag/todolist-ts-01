@@ -19,8 +19,8 @@ function AppWithUserState() {
     const todoListID_2 = v1();
 
     const [todoLists, setTodoLists] = useState<Array<TodolistDomainType>>([
-        {id: todoListID_1, title: 'What to learn', filter: 'all', addedDate: '', order: 0},
-        {id: todoListID_2, title: 'What to bye', filter: 'all', addedDate: '', order: 0},
+        {id: todoListID_1, title: 'What to learn', filter: 'all', entityStatus: 'idle', addedDate: '', order: 0},
+        {id: todoListID_2, title: 'What to bye', filter: 'all', entityStatus: 'idle',  addedDate: '', order: 0},
     ])
 
     const [tasks, setTasks] = useState<TaskStateType>({
@@ -96,6 +96,7 @@ function AppWithUserState() {
             addedDate: '',
             order: 0,
             filter: 'all',
+            entityStatus: 'idle',
         }
         setTodoLists([...todoLists, newTodoList])
         setTasks({
@@ -150,10 +151,8 @@ function AppWithUserState() {
                             <Grid item key={tl.id}>
                                 <Paper elevation={20} style={{padding: '15px'}}>
                                     <Todolist
-                                        title={tl.title}
-                                        filter={tl.filter}
                                         tasks={tasksForTodolist}
-                                        todolistID={tl.id}
+                                        todolist={tl}
                                         addTask={addTask}
                                         removeTask={removeTask}
                                         changeTaskTitle={changeTaskTitle}

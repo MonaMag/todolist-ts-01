@@ -30,9 +30,7 @@ export const Todolists = ({demo = false}: PropsType) => {
     const tasks = useSelector<AppRootStateType, TaskStateType>(state => state.tasks);
 
     useEffect(() => {
-        if(demo) {
-            return
-        }
+        if(demo) return;
         dispatch(fetchTodolistsTC());
     }, [])
 
@@ -93,10 +91,8 @@ export const Todolists = ({demo = false}: PropsType) => {
                     return (<Grid item key={tl.id}>
                             <Paper elevation={20} style={{padding: '15px'}}>
                                 <Todolist
+                                    todolist={tl}
                                     tasks={tasks[tl.id]}
-                                    title={tl.title}
-                                    filter={tl.filter}
-                                    todolistID={tl.id}
                                     deleteTodoList={removeTodoList}
                                     addTask={addTask}
                                     changeTaskTitle={changeTaskTitle}

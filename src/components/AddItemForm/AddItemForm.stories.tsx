@@ -26,3 +26,9 @@ export const AddItemFormBaseExample = Template.bind({})
 AddItemFormBaseExample.args = {
     addItem: callback
 }
+
+export const AddItemFormDisabledExample = Template.bind({})
+AddItemFormDisabledExample.args = {
+    disabled: true,
+    addItem: callback
+}
