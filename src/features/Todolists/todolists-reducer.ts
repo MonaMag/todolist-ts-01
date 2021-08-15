@@ -1,6 +1,6 @@
 import {todolistsAPI, TodolistType} from "../../api/todolists-api";
 import {Dispatch} from "redux";
-import {AppActionsType, RequestStatusType, setAppStatusAC, SetStatusAT} from "../../app/app-reducer";
+import {AppActionsType, RequestStatusType, setAppStatusAC} from "../../app/app-reducer";
 
 
 const ADD_TODOLIST = 'ADD_TODOLIST';
