@@ -1,7 +1,6 @@
 import axios from "axios";
 
 
-
 const instance = axios.create({
     baseURL: 'https://social-network.samuraijs.com/api/1.1/',
     withCredentials: true,
@@ -9,7 +8,6 @@ const instance = axios.create({
         'api-key': 'aa8b38a0-d891-47fb-a84d-9f4fa4fde0d7'
     }
 })
-
 export type TodolistType = {
     id: string
     title: string
@@ -43,15 +41,13 @@ type ResponseType<D = {}> = {
     data: D
 }
 
-
-
 export const todolistsAPI = {
     getTodolists() {
         const promise = instance.get<Array<TodolistType>>('todo-lists');
         return promise;
     },
     createTodolist(title: string) {
-        const promise = instance.post<ResponseType<{item:  TodolistType}>>('todo-lists', {title: title})
+        const promise = instance.post<ResponseType<{ item: TodolistType }>>('todo-lists', {title: title})
         return promise;
     },
     deleteTodolist(id: string) {
@@ -62,3 +58,20 @@ export const todolistsAPI = {
         return instance.put<ResponseType>(`todo-lists/${id}`, {title: title});
     }
 }
+
+
+/*
+export type LoginParamsType = {
+    email: string
+    password: string
+    rememberMe: boolean
+    captcha?: string
+}
+
+export const authAPI = {
+    login(data: LoginParamsType) {
+        const promise = instance.post<ResponseType<{ userId?: number }>>('auth/login', data)
+        return promise;
+    }
+}
+*/

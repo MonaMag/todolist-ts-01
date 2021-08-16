@@ -7,6 +7,8 @@ import {ErrorSnackbars} from "../components/ErrorSnackbar/ErrirSnackbar";
 import {useSelector} from "react-redux";
 import {AppRootStateType} from "./store";
 import {RequestStatusType} from "./app-reducer";
+import {BrowserRouter, Route, Switch} from "react-router-dom";
+import {Login} from "../features/Login/Login";
 
 type PropsType = {
     demo?: boolean
@@ -17,6 +19,7 @@ const App = ({demo = false}: PropsType) => {
 
     //UI:
     return (
+        <BrowserRouter>
         <div className="App">
             <ErrorSnackbars/>
             <AppBar position={'static'}>
@@ -35,9 +38,14 @@ const App = ({demo = false}: PropsType) => {
             </AppBar>
 
             <Container fixed>
-                <Todolists demo={demo}/>
+                <Switch>
+                <Route exact path={'/'} render={ () => <Todolists demo={demo}/> }/>
+                <Route path={'/login'} render={ () => <Login /> }/>
+                <Route path={'*'} render={ () => <h1>404: PAGE NOT FOUND</h1> }/>
+                </Switch>
             </Container>
         </div>
+        </BrowserRouter>
     )
 }
 

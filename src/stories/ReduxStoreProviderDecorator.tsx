@@ -15,6 +15,7 @@ const rootReducer = combineReducers({
     tasks: tasksReducer,
     todolists: todolistReducer,
     app: appReducer
+
 })
 
 //* initial state for storybook tests only
@@ -43,7 +44,11 @@ const initialGlobalState: AppRootStateType = {
     },
     app: {
         error: null,
-        status: 'idle'
+        status: 'idle',
+        isAppInitialized: false
+    },
+    auth: {
+        isAuth: false
     }
 };
 

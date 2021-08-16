@@ -1,6 +1,6 @@
 import {todolistsAPI, TodolistType} from "../../api/todolists-api";
 import {Dispatch} from "redux";
-import {AppActionsType, RequestStatusType, setAppStatusAC} from "../../app/app-reducer";
+import {AppReducerActionsType, RequestStatusType, setAppStatusAC} from "../../app/app-reducer";
 
 
 const ADD_TODOLIST = 'ADD_TODOLIST';
@@ -10,7 +10,7 @@ const CHANGE_TODOLIST_FILTER = 'CHANGE_TODOLIST_FILTER';
 const SET_TODOLIST = 'SET_TODOLIST';
 const SET_TODOLIST_STATUS = 'SET_TODOLIST_STATUS';
 
-
+//type ------------------------------------------------------------------->
 export type FilterValuesType = 'all' | 'active' | 'completed';
 
 export type AddTodolistActionType = ReturnType<typeof addTodolistAC>
@@ -29,9 +29,13 @@ export type TodolistDomainType = TodolistType & {
     filter: FilterValuesType
     entityStatus: RequestStatusType
 }
-type ThunkDispatchType = TodolistActionType | AppActionsType
+type ThunkDispatchType = TodolistActionType | AppReducerActionsType
+
+//initial state ---------------------------------------------------------->
 const initialState: Array<TodolistDomainType> = []
 
+
+//reducer ----------------------------------------------------------------->
 export const todolistReducer = (state = initialState, action: TodolistActionType): Array<TodolistDomainType> => {
     switch (action.type) {
         case ADD_TODOLIST:
@@ -57,7 +61,7 @@ export const todolistReducer = (state = initialState, action: TodolistActionType
     }
 }
 
-//* Action Creators
+//actions ---------------------------------------------------------------->
 export const removeTodolistAC = (todolistID: string) => ({type: 'REMOVE_TODOLIST', todolistID: todolistID} as const);
 export const addTodolistAC = (todolist: TodolistType) => ({type: 'ADD_TODOLIST', todolist} as const);
 export const changeTodolistTitleAC = (todolistID: string, title: string) => ({
@@ -81,7 +85,7 @@ export const setTodolistStatusAC = (todolistID: string, status: RequestStatusTyp
 } as const);
 
 
-//* Thunk Creators
+//thunks ----------------------------------------------------------------->
 export const fetchTodolistsTC = () => {
     return (dispatch: Dispatch<ThunkDispatchType>) => {
         dispatch(setAppStatusAC('loading'))
