@@ -29,12 +29,13 @@ export const authAPI = {
         const promise = instance.post<ResponseType<{ userId?: number }>>('auth/login', data)
         return promise;
     },
-    logout() {
-        instance.delete<ResponseType>('auth/login').then(res => res.data)
-        return instance.delete<ResponseType>('auth/login').then(res => res.data)
-    },
     authMe() {
-        const promise = instance.get<ResponseType>('auth/me').then(res => res.data)
+        const promise = instance.get<ResponseType<{id: number, email: string, login: string}>>('auth/me').then(res => res.data)
         return promise
+    },
+    logout() {
+        instance.delete<ResponseType<{userId?: number}>>('auth/login').then(res => res.data)
+        return instance.delete<ResponseType>('auth/login').then(res => res.data)
     }
+
 }

@@ -1,24 +1,20 @@
 import {AppReducerActionsType, setAppStatusAC} from "../../app/app-reducer";
-import {Dispatch} from "redux";
 import {handleServerAppError, handleServerNetworkError} from "../../utils/error-utils";
 import {authAPI, LoginParamsType} from "../../api/auth-api";
-import {AppThunkActionType} from "../../app/store";
-
+import {AppThunkType} from "../../app/store";
 
 
 //type ------------------------------------------------------------------->
-export type AuthActionsType = ReturnType<typeof  setIsAuthAC>
-
-export type AuthStateType = { isAuth: boolean }
-
-export type ThunkDispatchType = AuthActionsType | AppReducerActionsType;
+export type AuthReducerActionsType = ReturnType<typeof setIsAuthAC>
+export type AuthStateType   = typeof initialState
+export type ThunkDispatchType = AuthReducerActionsType | AppReducerActionsType;
 
 
 //reducer ----------------------------------------------------------------->
-const initialState: AuthStateType = {
+const initialState = {
     isAuth: false
 };
-export const authReducer = (state = initialState, action: AuthActionsType): AuthStateType => {
+export const authReducer = (state = initialState, action: AuthReducerActionsType): AuthStateType => {
     switch (action.type) {
         case 'login/SET_IS_AUTH':
             return {...state, isAuth: action.isAuth}
@@ -34,15 +30,31 @@ export const setIsAuthAC = (isAuth: boolean) =>
 //thunks ----------------------------------------------------------------->
 
 
-export const loginTC = (data: LoginParamsType): AppThunkActionType => (dispatch) => {
+export const loginTC = (data: LoginParamsType): AppThunkType => (dispatch) => {
     dispatch(setAppStatusAC('loading'))
     authAPI.login(data)
         .then(res => {
-            if(res.data.resultCode === 0) {
+            if (res.data.resultCode === 0) {
                 dispatch(setIsAuthAC(true))
                 dispatch(setAppStatusAC('succeeded'))
             } else {
                 handleServerAppError(res.data, dispatch)
+            }
+        })
+        .catch(error => {
+            handleServerNetworkError(error, dispatch)
+        })
+}
+
+export const logoutTC = (): AppThunkType => dispatch => {
+    dispatch(setAppStatusAC('loading'))
+    authAPI.logout()
+        .then(data => {
+            if(data.resultCode === 0) {
+                dispatch(setIsAuthAC(false))
+                dispatch(setAppStatusAC('succeeded'))
+            } else {
+                handleServerAppError(data, dispatch)
             }
         })
         .catch(error => {

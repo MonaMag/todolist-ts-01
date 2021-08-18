@@ -1,13 +1,16 @@
 import React from 'react'
 import {Checkbox, FormControl, FormControlLabel, FormGroup, FormLabel, TextField, Button, Grid} from '@material-ui/core'
 import {useFormik} from "formik";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {loginTC} from "./auth-reducer";
 import {LoginParamsType} from "../../api/auth-api";
+import { Redirect } from 'react-router-dom';
+import {AppRootStateType} from "../../app/store";
 
 export const Login = () => {
 
     const dispatch = useDispatch();
+    const isAuth = useSelector<AppRootStateType, boolean>(state => state.auth.isAuth)
 
     const formik = useFormik<LoginParamsType>({
         validate: (values) => {
@@ -32,6 +35,9 @@ export const Login = () => {
         },
     });
 
+    if(isAuth) {
+        return <Redirect to={'/'} />
+    }
 
     return <Grid container justify="center">
         <Grid item xs={4}>

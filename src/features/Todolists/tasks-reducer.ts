@@ -18,7 +18,7 @@ const REMOVE_TODOLIST = 'REMOVE_TODOLIST';
 const SET_TODOLIST = 'SET_TODOLIST';
 const SET_TASKS = 'SET_TASKS';
 
-export type TasksActionsType =
+export type TasksReducerActionsType =
     | ReturnType<typeof removeTaskAC>
     | ReturnType<typeof addTaskAC>
     | ReturnType<typeof updateTaskAC>
@@ -38,13 +38,13 @@ export type UpdateDomainTaskModelType = {
 export type TaskStateType = {
     [key: string]: Array<TaskType>
 }
-export type ThunkDispatchType = TasksActionsType | AppReducerActionsType
+export type ThunkDispatchType = TasksReducerActionsType | AppReducerActionsType
 
 //initial state ---------------------------------------------------------->
 const initialState: TaskStateType = {};
 
 //reducer ----------------------------------------------------------------->
-export const tasksReducer = (state = initialState, action: TasksActionsType): TaskStateType => {
+export const tasksReducer = (state = initialState, action: TasksReducerActionsType): TaskStateType => {
     switch (action.type) {
         case ADD_TASK:
             return {...state, [action.task.todoListId]: [action.task, ...state[action.task.todoListId]]}
@@ -99,7 +99,7 @@ export const fetchTasksTC = (todolistId: string) => {
             })
     }
 }
-export const removeTaskTC = (todolistID: string, taskID: string) => (dispatch: Dispatch<TasksActionsType>) => {
+export const removeTaskTC = (todolistID: string, taskID: string) => (dispatch: Dispatch<TasksReducerActionsType>) => {
     tasksAPI.deleteTask(todolistID, taskID)
         .then(res => {
             let action = removeTaskAC(taskID, todolistID);

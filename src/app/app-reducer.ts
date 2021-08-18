@@ -1,7 +1,7 @@
 import {authAPI} from "../api/auth-api";
 import {handleServerAppError, handleServerNetworkError} from "../utils/error-utils";
 import {setIsAuthAC} from "../features/Login/auth-reducer";
-import {AppThunkActionType} from "./store";
+import {AppThunkType} from "./store";
 
 
 
@@ -14,7 +14,7 @@ export type SetAppStatusAT = ReturnType<typeof setAppStatusAC>;
 export type SetAppInitializedAT = ReturnType<typeof setAppInitializedAC>;
 
 export type AppReducerActionsType = SetAppErrorAT | SetAppStatusAT | SetAppInitializedAT;
-export type InitialStateType = typeof initialState;
+export type AppReducerStateType = typeof initialState;
 
 
 //reducer ----------------------------------------------------------------->
@@ -23,10 +23,11 @@ const initialState = {
     status: 'idle' as RequestStatusType,
     //если ошибка какая-то глобальная произойдет - мы запишем текст ошибки сюда
     error: null as ErrorType,
+    //true когда приложение проинициализировалось (проверили пользователя, настройки получили и тд)
     isAppInitialized: false,
 }
 
-export const appReducer = (state: InitialStateType = initialState, action: AppReducerActionsType): InitialStateType => {
+export const appReducer = (state: AppReducerStateType = initialState, action: AppReducerActionsType): AppReducerStateType => {
     switch (action.type) {
         case 'APP/SET-STATUS':
             return {...state, status: action.status}
@@ -47,7 +48,7 @@ export const setAppInitializedAC = (isAppInitialized: boolean) => ({type: 'APP/S
 
 //thunks ----------------------------------------------------------------->
 
-export const initializeApp = ():AppThunkActionType => dispatch => {
+export const initializeAppTC = ():AppThunkType => dispatch => {
     dispatch(setAppStatusAC('loading'))
     authAPI.authMe()
         .then(data => {

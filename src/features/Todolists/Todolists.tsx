@@ -13,6 +13,7 @@ import {TaskStatuses} from "../../api/tasks-api";
 import {Grid, Paper} from "@material-ui/core";
 import {AddItemForm} from "../../components/AddItemForm/AddItemForm";
 import {Todolist} from "./Todolist/Todolist";
+import {Redirect} from "react-router-dom";
 
 
 type PropsType = {
@@ -20,18 +21,16 @@ type PropsType = {
 }
 export const Todolists = ({demo = false}: PropsType) => {
     console.log('Todolists R')
-//BLL:
+
     const dispatch = useDispatch();
-
-//* TodoLists data declaration section
     const todolists = useSelector<AppRootStateType, TodolistDomainType[]>(state => state.todolists);
-
-//* Tasks data declaration section
     const tasks = useSelector<AppRootStateType, TaskStateType>(state => state.tasks);
+    const isAuth = useSelector<AppRootStateType, boolean>(state => state.auth.isAuth)
 
     useEffect(() => {
-        if(demo) return;
-        dispatch(fetchTodolistsTC());
+        if(demo || !isAuth) return;
+        const thunk = fetchTodolistsTC();
+        dispatch(thunk);
     }, [])
 
 
@@ -77,6 +76,8 @@ export const Todolists = ({demo = false}: PropsType) => {
         let action = changeTodolistFilterAC(todolistID, value);
         dispatch(action);
     }, [dispatch]);
+
+    if(!isAuth) return <Redirect to={'/login'} />
 
     return (
         <>
