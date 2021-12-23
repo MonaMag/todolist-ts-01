@@ -16,7 +16,7 @@ import {ErrorSnackbars} from "../components/ErrorSnackbar/ErrirSnackbar";
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "./store";
 import {initializeAppTC, RequestStatusType} from "./app-reducer";
-import {BrowserRouter, Redirect, Route, Switch} from "react-router-dom";
+import {Redirect, Route, Switch} from "react-router-dom";
 import {Login} from "../features/Login/Login";
 import {logoutTC} from "../features/Login/auth-reducer";
 
@@ -27,15 +27,17 @@ const App = ({demo = false}: PropsType) => {
     console.log('AppWithUserState is called')
 
     const dispatch = useDispatch()
+
     const status = useSelector<AppRootStateType, RequestStatusType>((state) => state.app.status)
     const isAppInitialized = useSelector<AppRootStateType, boolean>((state) => state.app.isAppInitialized)
+    const isAuth = useSelector<AppRootStateType, boolean>(state => state.auth.isAuth)
 
 
     useEffect(() => {
         dispatch(initializeAppTC())
-    }, [])
+    }, [dispatch])
 
-    const handleLogout = useCallback(() => {
+    const logoutHandler = useCallback(() => {
         dispatch(logoutTC())
     }, [dispatch])
 
@@ -44,9 +46,9 @@ const App = ({demo = false}: PropsType) => {
     </div>
 
 
+
     //UI:
     return (
-        <BrowserRouter>
             <div className="App">
                 <ErrorSnackbars/>
                 <AppBar position={'static'}>
@@ -59,23 +61,23 @@ const App = ({demo = false}: PropsType) => {
                         <Typography variant="h6">
                             TodoLists
                         </Typography>
-
-                        {isAppInitialized && <Button color="inherit" onClick={() => handleLogout()}>Log out</Button>}
+                        {isAuth ? <Button color="inherit"
+                                          onClick={() => logoutHandler()}>Log out</Button>
+                            : <span>&#128269;</span>}
                     </Toolbar>
-
-                    {status === 'loading' && <LinearProgress />}
                 </AppBar>
+
+                {status === 'loading' && <LinearProgress/>}
 
                 <Container fixed>
                     <Switch>
                         <Route exact path={'/'} render={() => <Todolists demo={demo}/>}/>
                         <Route path={'/login'} render={() => <Login/>}/>
-                        {/*<Route path={'/404'} render={() => <h1>404: PAGE NOT FOUND</h1>}/>
-                        <Redirect from={'*'} to={'/404'}/>*/}
+                        <Route path={'/404'} render={() => <h1>404: PAGE NOT FOUND</h1>}/>
+                        <Redirect from={'*'} to={'/404'}/>
                     </Switch>
                 </Container>
             </div>
-        </BrowserRouter>
     )
 }
 

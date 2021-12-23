@@ -23,7 +23,6 @@ export const AddItemForm = React.memo(({addItem, disabled = false}: AddItemFormT
         } else {
             setError('Title is required');
         }
-        //setTitle('');
     };
 
     const onKeyPressAddItem = (e: KeyboardEvent<HTMLInputElement>) => {
