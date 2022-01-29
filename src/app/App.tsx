@@ -51,7 +51,6 @@ const App = ({demo = false}: PropsType) => {
             <div className="App">
                 <ErrorSnackbars/>
                 <AppBar position={'static'}>
-<div>TEST</div>
                     <Toolbar style={{justifyContent: 'space-between'}}>
                         <IconButton edge="start" color="inherit" aria-label="menu">
                             <Menu/>

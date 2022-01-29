@@ -26,7 +26,7 @@ export type LoginParamsType = {
 //api----------------------------------------------------------------------------->
 export const authAPI = {
     authMe() {
-        const promise = instance.get<ResponseType<{id: number, email: string, login: string}>>('auth/me').then(res => res.data)
+        const promise = instance.get<ResponseType<{ id: number, email: string, login: string }>>('auth/me').then(res => res.data)
         return promise
     },
     login(data: LoginParamsType) {
@@ -34,7 +34,7 @@ export const authAPI = {
         return promise;
     },
     logout() {
-        instance.delete<ResponseType<{userId?: number}>>('auth/login').then(res => res.data)
+        instance.delete<ResponseType<{ userId?: number }>>('auth/login').then(res => res.data)
         return instance.delete<ResponseType>('auth/login').then(res => res.data)
     }
 

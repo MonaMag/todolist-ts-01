@@ -8,16 +8,18 @@
 }*/
 
 .is-done {
-  opacity: 0.5;
+    opacity: 0.5;
 }
 
 .active-filter {
-  background-color: lightsteelblue;
+    background-color: lightsteelblue;
 }
- .error {
-   border: 2px solid red;
-     outline: none;
- }
+
+.error {
+    border: 2px solid red;
+    outline: none;
+}
+
 /*.error-message {*/
 /*    color: red;*/
 /*}*/

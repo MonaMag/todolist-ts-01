@@ -58,20 +58,3 @@ export const todolistsAPI = {
         return instance.put<ResponseType>(`todo-lists/${id}`, {title: title});
     }
 }
-
-
-/*
-export type LoginParamsType = {
-    email: string
-    password: string
-    rememberMe: boolean
-    captcha?: string
-}
-
-export const authAPI = {
-    login(data: LoginParamsType) {
-        const promise = instance.post<ResponseType<{ userId?: number }>>('auth/login', data)
-        return promise;
-    }
-}
-*/
