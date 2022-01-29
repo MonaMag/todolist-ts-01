@@ -25,6 +25,7 @@ type PropsType = {
 }
 const App = ({demo = false}: PropsType) => {
     console.log('AppWithUserState is called')
+    console.log('CHECK')
 
     const dispatch = useDispatch()
 
@@ -45,14 +46,12 @@ const App = ({demo = false}: PropsType) => {
         <CircularProgress style={{width: '100px'}}/>
     </div>
 
-
-
     //UI:
     return (
             <div className="App">
                 <ErrorSnackbars/>
                 <AppBar position={'static'}>
-
+<div>TEST</div>
                     <Toolbar style={{justifyContent: 'space-between'}}>
                         <IconButton edge="start" color="inherit" aria-label="menu">
                             <Menu/>
