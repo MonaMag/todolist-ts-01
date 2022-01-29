@@ -55,6 +55,7 @@ export const initializeAppTC = ():AppThunkType => dispatch => {
             if(data.resultCode === 0) {
                 dispatch(setIsAuthAC(true))
                 dispatch(setAppInitializedAC(true))
+                dispatch(setIsAuthAC(true))
                 dispatch(setAppStatusAC('succeeded'))
             } else {
                 handleServerAppError(data, dispatch)
