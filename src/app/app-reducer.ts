@@ -60,9 +60,13 @@ export const initializeAppTC = ():AppThunkType => dispatch => {
             } else {
                 handleServerAppError(data, dispatch)
                 dispatch(setAppInitializedAC(true))
+                dispatch(setIsAuthAC(false))
             }
         })
         .catch(error => {
             handleServerNetworkError(error, dispatch)
         })
+        .finally( ()=> {
+            dispatch(setAppStatusAC('succeeded'))
+            })
 }
